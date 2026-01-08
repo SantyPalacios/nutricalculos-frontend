@@ -11,7 +11,6 @@ export default function Register({ onSwitchToLogin, closeModal }) {
     const [error, setError] = useState('');
     const [mensaje, setMensaje] = useState('');
 
-
     const manejarEnvio = async (e) => {
         e.preventDefault();
         setError('');

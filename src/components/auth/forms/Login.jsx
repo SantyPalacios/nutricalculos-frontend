@@ -9,7 +9,6 @@ export default function Login({ onSwitchToSignup, closeModal }) {
     const [contrasena, setContrasena] = useState('');
     const [error, setError] = useState('');
 
-
     const manejarEnvio = async (e) => {
         e.preventDefault();
         setError('');

@@ -20,8 +20,8 @@ export default function SaveConfirmationModal({ isOpen, onClose, onConfirm, titl
                         <div className="absolute top-0 left-0 w-full h-1 bg-amber-400" />
 
                         <div className="mb-6">
-                            <h3 className="text-xl font-bold text-stone-800 mb-2">{title}</h3>
-                            <p className="text-stone-600 leading-relaxed">
+                            <h3 className="text-xl font-bold text-stone-800 mb-2 text-center">{title}</h3>
+                            <p className="text-stone-600 leading-relaxed text-center">
                                 {message}
                             </p>
                         </div>

@@ -1,10 +1,11 @@
 import { motion, AnimatePresence } from "framer-motion";
+import { createPortal } from "react-dom";
 
 export default function SaveConfirmationModal({ isOpen, onClose, onConfirm, title, message }) {
-    return (
+    return createPortal(
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
                     {/* Backdrop click to close */}
                     <div className="absolute inset-0" onClick={onClose} />
 
@@ -45,6 +46,7 @@ export default function SaveConfirmationModal({ isOpen, onClose, onConfirm, titl
                     </motion.div>
                 </div>
             )}
-        </AnimatePresence>
+        </AnimatePresence>,
+        document.body
     );
 }

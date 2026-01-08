@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import 'tailwindcss';
+@plugin "daisyui";
+
+@theme {
+    --font-sans: "Poppins", sans-serif;
+    --color-violeta-tech: #6366F1;
+    /* Keep or change if needed, maybe to a softer accent like #84CC16 (Lime) or #EAB308 (Yellow) later */
+    --color-bg-principal: #FAFAF9;
+    /* Stone 50 - Warm White */
+    --color-surface: #FFFFFF;
+    /* White */
+    --color-text-primary: #1C1917;
+    /* Stone 900 */
+    --color-text-secondary: #44403C;
+    /* Stone 700 */
+    --color-border: #E7E5E4;
+    /* Stone 200 */
+}
+
+:root {
+    font-family: "Poppins", sans-serif;
+    background-color: var(--color-bg-principal);
+    color: var(--color-text-primary);
+}
+
+body {
+    background-color: var(--color-bg-principal);
+    color: var(--color-text-primary);
+}
+
+h1 {
+    font-size: 3em;
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+h2 {
+    font-size: 2em;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+h3 {
+    font-size: 1.5em;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+}
+
+h4 {
+    font-size: 1em;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+}
+
+input,
+select,
+textarea {
+    background-color: #FFFFFF;
+    color: #1C1917;
+    border: 1px solid #E5E7EB;
+    /* Gray 200 */
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    transition: all 0.2s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 2px solid #F59E0B;
+    /* Amber 500 - Matches specific yellow accents */
+    border-color: #F59E0B;
+}

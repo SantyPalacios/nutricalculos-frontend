@@ -1,5 +1,6 @@
 import { useState, useContext } from 'react';
 import { UserContext } from "../../../context/UserContext";
+import { API_URL } from '../../../config/api';
 
 export default function Register({ onSwitchToLogin, closeModal }) {
     const { setUser } = useContext(UserContext);
@@ -10,13 +11,14 @@ export default function Register({ onSwitchToLogin, closeModal }) {
     const [error, setError] = useState('');
     const [mensaje, setMensaje] = useState('');
 
+
     const manejarEnvio = async (e) => {
         e.preventDefault();
         setError('');
         setMensaje('');
 
         try {
-            const res = await fetch('http://localhost:3000/api/auth', {
+            const res = await fetch(`${API_URL}/auth`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username: usuario, email, password: contrasena }),

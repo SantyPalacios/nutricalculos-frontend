@@ -2,6 +2,7 @@ import { useContext, useEffect, useState, useRef } from "react";
 import SaveConfirmationModal from "../common/SaveConfirmationModal";
 import { UserContext } from "../../context/UserContext";
 import { motion, AnimatePresence } from "framer-motion";
+import { API_URL } from "../../config/api";
 
 const actividadFactor = {
     "Sedentario": 1.3,
@@ -55,7 +56,7 @@ export default function REDCalculator({ peso, setPeso, altura, setAltura }) {
     async function guardarRED(REDredondeado) {
 
         try {
-            const res = await fetch("http://localhost:3000/api/users/me", {
+            const res = await fetch(`${API_URL}/users/me`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

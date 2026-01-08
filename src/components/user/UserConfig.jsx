@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import SaveConfirmationModal from "../common/SaveConfirmationModal";
+import { API_URL } from "../../config/api";
 
 export default function UserConfig() {
   const { user, setUser } = useContext(UserContext);
@@ -27,7 +28,7 @@ export default function UserConfig() {
     setShowConfirmModal(false); // Close the modal
 
     try {
-      const res = await fetch("http://localhost:3000/api/users/me", {
+      const res = await fetch(`${API_URL}/users/me`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

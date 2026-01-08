@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import SaveConfirmationModal from "../common/SaveConfirmationModal";
 import { UserContext } from "../../context/UserContext";
+import { API_URL } from "../../config/api";
 
 export default function IMCCalculator({ peso, setPeso, altura, setAltura, onContinue, showContinue, onCalculated }) {
     const { user, setUser } = useContext(UserContext);
@@ -27,7 +28,7 @@ export default function IMCCalculator({ peso, setPeso, altura, setAltura, onCont
     // --- GUARDAR IMC ---
     async function guardarDatos(pesoNum, alturaNum, imcValor) {
         try {
-            const res = await fetch("http://localhost:3000/api/users/me", {
+            const res = await fetch(`${API_URL}/users/me`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

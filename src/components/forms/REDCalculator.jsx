@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState, useRef } from "react";
+import { createPortal } from "react-dom";
 import SaveConfirmationModal from "../common/SaveConfirmationModal";
 import { UserContext } from "../../context/UserContext";
 import { motion, AnimatePresence } from "framer-motion";
@@ -22,6 +23,7 @@ export default function REDCalculator({ peso, setPeso, altura, setAltura }) {
     const [direction, setDirection] = useState(0);
     const datosYaCargados = useRef(false);
     const [showSaveModal, setShowSaveModal] = useState(false);
+    const [showActivityModal, setShowActivityModal] = useState(false);
     const [calcData, setCalcData] = useState(null);
 
     const activitiesOrder = ["Sedentario", "Pocoactivo", "Activo", "Muyactivo"];
@@ -247,62 +249,78 @@ export default function REDCalculator({ peso, setPeso, altura, setAltura }) {
 
             <div className="flex items-center justify-center gap-2 mt-2 mb-4">
                 <span className="text-sm text-stone-600">¿No sabes tu nivel de actividad?</span>
-                <label
-                    htmlFor="modal-activ"
+                <button
+                    onClick={() => setShowActivityModal(true)}
                     className="w-6 h-6 flex items-center justify-center rounded-full bg-amber-100 text-amber-600 border border-amber-200 cursor-pointer hover:bg-amber-200 transition font-bold text-xs"
                 >
                     ?
-                </label>
+                </button>
             </div>
 
-            {/*  MODAL */}
-            <input type="checkbox" id="modal-activ" className="modal-toggle" />
-            <div className="modal">
-                <div className="modal-box bg-white">
-                    <h3 className="font-bold text-lg mb-4 border-2 border-stone-200 rounded-lg p-2 text-stone-800">
-                        Elige tu nivel de actividad física
-                    </h3>
+            {/* MODAL via Portal - evita quedar atrapado en el stacking context de Framer Motion */}
+            {showActivityModal && createPortal(
+                <div
+                    className="fixed inset-0 flex items-center justify-center"
+                    style={{ zIndex: 9999 }}
+                    onClick={(e) => { if (e.target === e.currentTarget) setShowActivityModal(false); }}
+                >
+                    {/* Overlay */}
+                    <div className="absolute inset-0 bg-black/30" />
 
-                    <div className="flex gap-3 w-full text-stone-800">
-                        {["Sedentario", "Pocoactivo", "Activo", "Muyactivo"].map((activity) => (
-                            <label
-                                key={activity}
-                                className={`btn btn-outline border-stone-300 hover:border-amber-500 hover:bg-amber-100 hover:text-stone-900 w-50px justify-start ${selectedActivity === activity ? "bg-amber-500 text-white border-amber-500" : "text-stone-700"
+                    {/* Modal box */}
+                    <div className="relative bg-white rounded-2xl shadow-2xl p-6 w-full max-w-lg mx-4">
+                        <h3 className="font-bold text-lg mb-4 border-2 border-stone-200 rounded-lg p-2 text-stone-800">
+                            Elige tu nivel de actividad física
+                        </h3>
+
+                        <div className="flex gap-3 w-full text-stone-800 flex-wrap">
+                            {["Sedentario", "Pocoactivo", "Activo", "Muyactivo"].map((activity) => (
+                                <button
+                                    key={activity}
+                                    className={`btn btn-outline border-stone-300 hover:border-amber-500 hover:bg-amber-100 hover:text-stone-900 justify-start ${
+                                        selectedActivity === activity ? "bg-amber-500 text-white border-amber-500" : "text-stone-700"
                                     }`}
-                                onClick={() => handleActivityClick(activity)}
-                            >
-                                {activityLabels[activity]}
-                            </label>
-                        ))}
-                    </div>
-
-                    <div className="mt-4 h-48 overflow-hidden relative">
-                        <AnimatePresence mode="wait" custom={direction}>
-                            {selectedActivity && (
-                                <motion.div
-                                    key={selectedActivity}
-                                    custom={direction}
-                                    variants={variants}
-                                    initial="enter"
-                                    animate="center"
-                                    exit="exit"
-                                    transition={{
-                                        x: { type: "spring", stiffness: 300, damping: 30 },
-                                        opacity: { duration: 0.2 }
-                                    }}
-                                    className="text-sm border-2 rounded-lg p-2 text-stone-700 border-stone-200 absolute w-full top-0 left-0 bg-white"
+                                    onClick={() => handleActivityClick(activity)}
                                 >
-                                    <p>{activityDescriptions[selectedActivity]}</p>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
+                                    {activityLabels[activity]}
+                                </button>
+                            ))}
+                        </div>
 
-                    <div className="modal-action">
-                        <label htmlFor="modal-activ" className="btn btn-ghost text-stone-600 hover:bg-stone-100">Cerrar</label>
+                        <div className="mt-4 h-48 overflow-hidden relative">
+                            <AnimatePresence mode="wait" custom={direction}>
+                                {selectedActivity && (
+                                    <motion.div
+                                        key={selectedActivity}
+                                        custom={direction}
+                                        variants={variants}
+                                        initial="enter"
+                                        animate="center"
+                                        exit="exit"
+                                        transition={{
+                                            x: { type: "spring", stiffness: 300, damping: 30 },
+                                            opacity: { duration: 0.2 }
+                                        }}
+                                        className="text-sm border-2 rounded-lg p-2 text-stone-700 border-stone-200 absolute w-full top-0 left-0 bg-white"
+                                    >
+                                        <p>{activityDescriptions[selectedActivity]}</p>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+
+                        <div className="flex justify-end mt-4">
+                            <button
+                                onClick={() => setShowActivityModal(false)}
+                                className="btn btn-ghost text-stone-600 hover:bg-stone-100"
+                            >
+                                Cerrar
+                            </button>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </div>,
+                document.body
+            )}
 
             <button
                 onClick={calcularRED}

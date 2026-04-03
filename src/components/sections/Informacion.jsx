@@ -11,22 +11,23 @@ const data = [
 const RADIAN = Math.PI / 180;
 const COLORS = [, '#00C49F', '#FFBB28', '#FF8042'];
 
-const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, name }) => {
+const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
     if (cx == null || cy == null || innerRadius == null || outerRadius == null) {
         return null;
     }
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const radius = outerRadius * 1.15;
     const ncx = Number(cx);
     const x = ncx + radius * Math.cos(-(midAngle ?? 0) * RADIAN);
     const ncy = Number(cy);
     const y = ncy + radius * Math.sin(-(midAngle ?? 0) * RADIAN);
 
     return (
-        <text x={x} y={y} fill="white" textAnchor={x > ncx ? 'start' : 'end'} dominantBaseline="central">
+        <text x={x} y={y} fill="#57534e" textAnchor="middle" dominantBaseline="central" fontSize={13} fontWeight={600}>
             {`${((percent ?? 1) * 100).toFixed(0)}%`}
         </text>
     );
 };
+
 
 export default function Informacion({ isAnimationActive = true }) {
     return (
@@ -35,12 +36,15 @@ export default function Informacion({ isAnimationActive = true }) {
                 <h3 className="text-2xl font-bold text-stone-400 mb-2">Algunos datos interesantes</h3>
                 <p className="text-stone-400 text-sm mb-6">Aca podes ver algunos datos generales sobre la nutrición en argentina</p>
             </div>
-            <div className="">
-                <PieChart style={{ width: '100%', maxWidth: '500px', maxHeight: '80vh', aspectRatio: 1 }} responsive>
+            <div style={{ pointerEvents: 'none', userSelect: 'none' }}>
+                <PieChart width={560} height={420}>
                     <Pie
                         data={data}
+                        cx={280}
+                        cy={210}
                         labelLine={false}
                         label={renderCustomizedLabel}
+                        outerRadius={160}
                         fill="#8884d8"
                         dataKey="value"
                         isAnimationActive={isAnimationActive}
